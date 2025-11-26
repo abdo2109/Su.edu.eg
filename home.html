@@ -1,308 +1,315 @@
-<html lang="ar" dir="rtl"><head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Portal</title>
+import React, { useState } from 'react';
+import { CheckCircle, XCircle, Trophy } from 'lucide-react';
+
+const CyberSecurityQuiz = () => {
+  const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [answers, setAnswers] = useState({});
+  const [showResult, setShowResult] = useState(false);
+
+  const questions = [
+    {
+      id: 1,
+      question: "لما تشوف تحدي جديد، أول حاجة تفكر فيها:",
+      options: [
+        { text: "عايز أفهم إزاي الكود بيشتغل من جواه", value: "pwn" },
+        { text: "عايز أخترق الموقع وأوصل للداتا", value: "web" },
+        { text: "عايز أفك تشفير الرسالة السرية", value: "crypto" },
+        { text: "عايز أجمع معلومات عن الهدف الأول", value: "osint" }
+      ]
+    },
+    {
+      id: 2,
+      question: "لو قدامك مشكلة صعبة جداً:",
+      options: [
+        { text: "أفضل أقعد ساعات أحلها لحد ما توصل", value: "pwn" },
+        { text: "أجرب حلول كتير بسرعة لحد ما حاجة تنجح", value: "web" },
+        { text: "أبحث وأقرا كتير قبل ما أبدأ", value: "crypto" },
+        { text: "أدور على معلومات من مصادر مختلفة", value: "osint" }
+      ]
+    },
+    {
+      id: 3,
+      question: "أكتر حاجة بتحفزك:",
+      options: [
+        { text: "إني أعمل حاجة محدش قدر يعملها", value: "pwn" },
+        { text: "إني أشوف نتيجة سريعة وواضحة", value: "web" },
+        { text: "إني أحل لغز معقد جداً", value: "crypto" },
+        { text: "إني ألاقي معلومة محدش لاقيها", value: "osint" }
+      ]
+    },
+    {
+      id: 4,
+      question: "في الدراسة أو الشغل، أنت:",
+      options: [
+        { text: "بحب الحاجات التقنية العميقة (Assembly, Memory)", value: "pwn" },
+        { text: "بحب أشتغل على مشاريع واقعية ومواقع", value: "web" },
+        { text: "بحب الرياضيات والخوارزميات", value: "crypto" },
+        { text: "بحب البحث والتحليل وجمع المعلومات", value: "osint" }
+      ]
+    },
+    {
+      id: 5,
+      question: "لو هتختار سلاح في لعبة:",
+      options: [
+        { text: "Sniper Rifle - دقة عالية وصبر", value: "pwn" },
+        { text: "Assault Rifle - سريع ومتنوع", value: "web" },
+        { text: "Puzzle Box - يحتاج ذكاء", value: "crypto" },
+        { text: "Drone/Radar - مراقبة ومعلومات", value: "osint" }
+      ]
+    },
+    {
+      id: 6,
+      question: "وقت الفراغ بتفضل:",
+      options: [
+        { text: "أتعلم حاجة صعبة جداً ومعقدة", value: "pwn" },
+        { text: "أجرب tools وتقنيات جديدة", value: "web" },
+        { text: "أحل ألغاز ومسائل رياضية", value: "crypto" },
+        { text: "أتصفح وأجمع معلومات عن مواضيع مختلفة", value: "osint" }
+      ]
+    },
+    {
+      id: 7,
+      question: "في CTF، أول قسم تروحله:",
+      options: [
+        { text: "Binary/Pwn - الأصعب والأقل حل", value: "pwn" },
+        { text: "Web - فيه تحديات كتير", value: "web" },
+        { text: "Crypto - يحتاج تفكير", value: "crypto" },
+        { text: "OSINT - بحث وتحقيق", value: "osint" }
+      ]
+    },
+    {
+      id: 8,
+      question: "بتفضل تشتغل:",
+      options: [
+        { text: "Low-level (Assembly, Memory, Registers)", value: "pwn" },
+        { text: "High-level (Python, JS, Applications)", value: "web" },
+        { text: "Mathematical (Algorithms, Encryption)", value: "crypto" },
+        { text: "Research (Google, Social Media, Data)", value: "osint" }
+      ]
+    },
+    {
+      id: 9,
+      question: "النجاح بالنسبالك:",
+      options: [
+        { text: "لما أعمل حاجة صعبة محدش عملها", value: "pwn" },
+        { text: "لما أخترق وأوصل للهدف", value: "web" },
+        { text: "لما أحل مشكلة معقدة", value: "crypto" },
+        { text: "لما ألاقي معلومة قيمة ومخفية", value: "osint" }
+      ]
+    },
+    {
+      id: 10,
+      question: "أكتر حاجة بتضايقك:",
+      options: [
+        { text: "إن الحاجة تكون سهلة أوي", value: "pwn" },
+        { text: "إن مفيش نتيجة واضحة", value: "web" },
+        { text: "إن الحل يكون عشوائي مش منطقي", value: "crypto" },
+        { text: "إن المعلومات تكون ناقصة", value: "osint" }
+      ]
+    }
+  ];
+
+  const handleAnswer = (value) => {
+    const newAnswers = { ...answers, [currentQuestion]: value };
+    setAnswers(newAnswers);
+
+    if (currentQuestion < questions.length - 1) {
+      setCurrentQuestion(currentQuestion + 1);
+    } else {
+      setShowResult(true);
+    }
+  };
+
+  const calculateResult = () => {
+    const scores = { pwn: 0, web: 0, crypto: 0, osint: 0 };
     
-    <style>
-        /* 
-        =====================================================
-        CSS Styles: نسخة طبق الأصل من الصورة بكل التفاصيل
-        =====================================================
-        */
+    Object.values(answers).forEach(answer => {
+      scores[answer]++;
+    });
 
-        /* Fonts and Body */
-        body {
-            /* استخدمت الخطوط دي عشان تدي نفس شكل الخط في الصورة على معظم الأجهزة */
-            font-family: "Tahoma", "Segoe UI", Arial, sans-serif;
-            margin: 0;
-            /* هنا مكان الخلفية بتاعتك، اتأكد إن اسم الصورة background.jpg */
-            background-image: url('background.jpg');
-            background-size: cover;
-            background-attachment: fixed;
-            background-position: center;
-            direction: rtl; 
-            color: #333;
-        }
+    const sortedScores = Object.entries(scores).sort((a, b) => b[1] - a[1]);
+    
+    return sortedScores;
+  };
 
-        /* Header */
-        header {
-            background-color: rgba(255, 255, 255, 0.9); /* خلفية بيضاء شبه شفافة */
-            padding: 10px 25px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #ddd;
-        }
+  const getFieldInfo = (field) => {
+    const info = {
+      pwn: {
+        name: "Binary Exploitation / Pwn",
+        emoji: "💥",
+        description: "أنت مناسب للتحديات الصعبة! Pwn هو الأقوى والأصعب في السيكيورتي.",
+        skills: ["Assembly x86/x64", "Buffer Overflow", "ROP chains", "Heap Exploitation", "GDB/Pwndbg"],
+        why: "شخصيتك تحب التحدي العميق والصبر على المشاكل المعقدة. Pwn محتاج صبر وتركيز عالي.",
+        color: "bg-red-500"
+      },
+      web: {
+        name: "Web Application Security",
+        emoji: "🌐",
+        description: "أنت مناسب للـ Web Hacking! مجال واسع ومطلوب جداً.",
+        skills: ["SQL Injection", "XSS", "CSRF", "SSRF", "Authentication Bypass", "Burp Suite"],
+        why: "شخصيتك تحب النتائج السريعة والتنوع. Web فيه تحديات كتير ومتنوعة.",
+        color: "bg-blue-500"
+      },
+      crypto: {
+        name: "Cryptography",
+        emoji: "🔐",
+        description: "أنت مناسب للـ Cryptography! يحتاج رياضيات وتفكير منطقي.",
+        skills: ["RSA", "AES", "Hash Functions", "Classical Ciphers", "Python Crypto"],
+        why: "شخصيتك تحب الألغاز المنطقية والتفكير العميق في الحلول.",
+        color: "bg-purple-500"
+      },
+      osint: {
+        name: "Open Source Intelligence",
+        emoji: "🔍",
+        description: "أنت مناسب للـ OSINT! البحث والتحقيق الرقمي.",
+        skills: ["Google Dorking", "Social Media Analysis", "Metadata Analysis", "Geolocation"],
+        why: "شخصيتك تحب البحث وجمع المعلومات من مصادر مختلفة.",
+        color: "bg-green-500"
+      }
+    };
+    return info[field];
+  };
 
-        header .logo {
-            display: flex;
-            align-items: center;
-            font-weight: bold;
-            color: #003366;
-            font-size: 13px; /* حجم خط اللوجو */
-            line-height: 1.2;
-        }
+  const resetQuiz = () => {
+    setCurrentQuestion(0);
+    setAnswers({});
+    setShowResult(false);
+  };
 
-        header .logo img {
-            height: 40px;
-            margin-left: 10px; 
-        }
+  if (showResult) {
+    const results = calculateResult();
+    const topField = results[0];
+    const secondField = results[1];
+    const fieldInfo = getFieldInfo(topField[0]);
+    const secondInfo = getFieldInfo(secondField[0]);
 
-        header nav a {
-            text-decoration: none;
-            color: #337ab7; /* نفس درجة الأزرق */
-            margin-right: 25px;
-            font-size: 13px;
-        }
-
-        /* Main Container */
-        .container {
-            max-width: 900px;
-            margin: 20px auto;
-            padding: 0 15px; /* مسافات من الجنبين فقط */
-        }
-
-        /* Card Style */
-        .card {
-            background-color: #ffffff;
-            border: 1px solid #ddd;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-            margin-bottom: 20px;
-            /* شلت الـ border-radius عشان تبقى حادة زي الصورة */
-        }
-
-        .card-header {
-            color: white;
-            padding: 8px 15px; /* تنسيق الهيدر */
-            font-size: 14px;
-            font-weight: bold;
-            margin: 0;
-        }
-        .card-header.red {
-            background-color: #d43f3a; /* نفس درجة الأحمر بالظبط */
-        }
-        .card-header.blue {
-            background-color: #428bca; /* نفس درجة الأزرق بالظبط */
-        }
-
-        /* Student Info Grid */
-        .info-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px 20px;
-            padding: 15px;
-            font-size: 13px; /* حجم الخط الصغير للمعلومات */
-        }
-        .info-grid div {
-            line-height: 1.8;
-        }
-        .info-grid strong {
-            font-weight: normal; /* الخط مش bold في الصورة */
-            color: #555;
-        }
-
-        /* Alerts */
-        .alert-red {
-            background-color: #f2dede;
-            border: 1px solid #ebccd1;
-            color: #a94442;
-            padding: 12px;
-            margin-bottom: 20px;
-            font-size: 13px;
-        }
-        .alert-yellow {
-            background-color: #fcf8e3;
-            border: 1px solid #faebcc;
-            color: #8a6d3b;
-            padding: 5px 15px 12px 15px;
-            margin-bottom: 20px;
-        }
-        .alert-yellow h4 {
-            font-size: 14px;
-            margin-top: 10px;
-            margin-bottom: 10px;
-        }
-        .alert-yellow ul {
-            padding-right: 20px;
-            margin: 0;
-            font-size: 13px;
-            line-height: 1.7;
-        }
-
-        /* Tables */
-        .table-wrapper {
-            overflow-x: auto;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 12px; /* حجم خط الجداول الصغير */
-        }
-        th, td {
-            padding: 8px; /* مسافات داخلية زي الصورة */
-            text-align: center;
-            border: 1px solid #ddd; /* حدود رمادية فاتحة */
-        }
-        thead th {
-            background-color: #f5f5f5; /* لون خلفية الهيدر في الجدول */
-            font-weight: bold;
-            color: #333;
-        }
-        tbody tr:nth-child(even) {
-            background-color: #f9f9f9; /* سطر وسطر بلون مختلف */
-        }
-        .academic-summary thead th {
-             background-color: #e7e7e7; /* هيدر الجدول التاني أغمق شوية */
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            header {
-                flex-direction: column;
-                align-items: center;
-                gap: 15px;
-                padding: 15px;
-            }
-            .info-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
-</head>
-<body>
-
-    <header>
-  <div class="logo">
-    <img src="Logo.png" alt="SU Logo">
-    <span>SINAI UNIVERSITY<br>ARISH</span>
-  </div>
-</header>
-
-
-    <main class="container">
-        <!-- Student Info Section -->
-        <div class="card">
-            <h2 class="card-header red">Student Info</h2>
-            <div class="info-grid">
-                <div><strong>Student ID:</strong> 202302714</div>
-                <div><strong>Student Name:</strong> عبدالخالق إسماعيل صبري إسماعيل</div>
-                <div><strong>Semester:</strong> Spring 2025</div>
-                <div><strong>Faculty:</strong> Faculty of Dentistry</div>
-                
-                <div><strong>Major:</strong> Oral and Dental Medicine and Surgery</div>
-                <div><strong>CGPA:</strong> 2.82 / 4</div>
-                <div><strong>Status:</strong> Regular</div>
-                <div><strong>L.E. Balance:</strong> 0.05 Debit</div>
-                <div><strong>US $ Balance:</strong> 0</div>
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 p-8">
+        <div className="max-w-4xl mx-auto">
+          <div className="bg-gray-800 rounded-lg shadow-2xl p-8 border border-purple-500">
+            <div className="text-center mb-8">
+              <Trophy className="w-20 h-20 text-yellow-500 mx-auto mb-4" />
+              <h2 className="text-4xl font-bold text-white mb-2">النتيجة النهائية! 🎯</h2>
             </div>
-        </div>
 
-        <!-- Alerts Section -->
-        
-        
+            <div className={`${fieldInfo.color} rounded-lg p-6 mb-6 transform hover:scale-105 transition`}>
+              <div className="text-center">
+                <div className="text-6xl mb-4">{fieldInfo.emoji}</div>
+                <h3 className="text-3xl font-bold text-white mb-2">{fieldInfo.name}</h3>
+                <div className="text-white text-xl mb-4">النسبة: {((topField[1] / 10) * 100).toFixed(0)}%</div>
+              </div>
+              
+              <div className="bg-black bg-opacity-30 rounded p-4 mb-4">
+                <p className="text-white text-lg mb-4">{fieldInfo.description}</p>
+                <p className="text-gray-200 mb-4">
+                  <strong>ليه مناسب ليك:</strong> {fieldInfo.why}
+                </p>
+              </div>
 
-        <!-- Results Table -->
-        <div class="card">
-            <h2 class="card-header blue">Results of Fall 2024</h2>
-            <div class="table-wrapper">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Course Code</th>
-                            <th>Course Title</th>
-                            <th>Credit Hrs.</th>
-                            <th>Grade</th>
-                            <th>Earned Hrs.</th>
-                            
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>DEB 2101</td>
-                            <td>Human anatomy(2)</td>
-                            <td>3</td>
-                            <td>B</td>
-                            <td>3</td>
-                            
-                        </tr>
-                        <tr>
-                            <td>DEH 2102</td>
-                            <td>Oral Biology (2)</td>
-                            <td>3</td>
-                            <td>A</td>
-                            <td>3</td>
-                            
-                        </tr>
-                        <tr>
-                            <td>DEM 2105</td>
-                            <td>Microbiology and Immunology (2)</td>
-                            <td>2</td>
-                            <td>B+</td>
-                            <td>2</td>
-                            
-                        </tr>
-                                                <tr>
-                            <td>DEM 2495</td>
-                            <td>Dental Biomaterial(2)</td>
-                            <td>2</td>
-                            <td>B+</td>
-                            <td>2</td>
-                            
-                        </tr>
-                        <tr>
-                            <td>DEM 2106</td>
-                            <td>Biochemistry(2)</td>
-                            <td>2</td>
-                            <td>B</td>
-                            <td>2</td>
-                            
-                        </tr>
-                        <tr>
-                            <td>SSE 02</td>
-                            <td>Physiology (2)</td>
-                            <td>2</td>
-                            <td>A</td>
-                            <td>2</td>
-                            
-                        </tr>
-                        
-                    </tbody>
-                </table>
+              <div className="bg-black bg-opacity-30 rounded p-4">
+                <h4 className="text-white font-bold text-xl mb-3">المهارات اللي هتحتاجها:</h4>
+                <div className="grid grid-cols-2 gap-2">
+                  {fieldInfo.skills.map((skill, idx) => (
+                    <div key={idx} className="flex items-center text-white">
+                      <CheckCircle className="w-5 h-5 mr-2 text-green-400" />
+                      <span>{skill}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
-        </div>
-        
-        <!-- Academic Summary -->
-        <div class="card academic-summary">
-            
-            
-        </div>
 
-        <!-- GPA Key Definition -->
-        <div class="card">
-            
-            
-        </div>
-          <div class="card">
-            <h2 class="card-header red">GPA Key Definition</h2>
-            <div class="table-wrapper">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Grade</th>
-                            <th>A+</th> <th>A</th> <th>A-</th> <th>B+</th> <th>B</th> <th>B-</th> <th>C+</th> <th>C</th> <th>D</th> <th>F</th> <th>W</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- الصف ده مش واضح في الصورة فـحذفته عشان تبقى مطابقة -->
-                        <tr>
-                            <td>Points</td>
-                            <td>4</td> <td>3.8</td> <td>3.6</td> <td>3.3</td> <td>3</td> <td>2.7</td> <td>2.4</td> <td>2.2</td> <td>2</td> <td>0</td> <td>0</td>
-                        </tr>
-                    </tbody>
-                </table>
+            {secondField[1] > 2 && (
+              <div className="bg-gray-700 rounded-lg p-4 mb-6">
+                <h4 className="text-white font-bold text-lg mb-2">مجال تاني مناسب ليك:</h4>
+                <div className="flex items-center">
+                  <span className="text-3xl mr-3">{secondInfo.emoji}</span>
+                  <div>
+                    <p className="text-white font-semibold">{secondInfo.name}</p>
+                    <p className="text-gray-300 text-sm">النسبة: {((secondField[1] / 10) * 100).toFixed(0)}%</p>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            <div className="bg-gray-700 rounded-lg p-4 mb-6">
+              <h4 className="text-white font-bold text-lg mb-3">جميع النتائج:</h4>
+              {results.map(([field, score]) => {
+                const info = getFieldInfo(field);
+                return (
+                  <div key={field} className="flex items-center justify-between mb-2">
+                    <div className="flex items-center">
+                      <span className="text-2xl mr-2">{info.emoji}</span>
+                      <span className="text-white">{info.name}</span>
+                    </div>
+                    <div className="flex items-center">
+                      <div className="w-32 bg-gray-600 rounded-full h-3 mr-3">
+                        <div 
+                          className={`${info.color} h-3 rounded-full transition-all duration-500`}
+                          style={{ width: `${(score / 10) * 100}%` }}
+                        ></div>
+                      </div>
+                      <span className="text-white font-bold">{score}/10</span>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
+
+            <button
+              onClick={resetQuiz}
+              className="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded-lg transition"
+            >
+              إعادة الاختبار
+            </button>
+          </div>
         </div>
-    </main>
+      </div>
+    );
+  }
 
+  const progress = ((currentQuestion + 1) / questions.length) * 100;
 
-</body></html>
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-gray-900 p-8">
+      <div className="max-w-3xl mx-auto">
+        <div className="bg-gray-800 rounded-lg shadow-2xl p-8 border border-blue-500">
+          <div className="mb-6">
+            <div className="flex justify-between text-white mb-2">
+              <span className="font-bold">السؤال {currentQuestion + 1} من {questions.length}</span>
+              <span>{progress.toFixed(0)}%</span>
+            </div>
+            <div className="w-full bg-gray-700 rounded-full h-3">
+              <div 
+                className="bg-gradient-to-r from-blue-500 to-purple-500 h-3 rounded-full transition-all duration-300"
+                style={{ width: `${progress}%` }}
+              ></div>
+            </div>
+          </div>
+
+          <h2 className="text-2xl font-bold text-white mb-8 text-center">
+            {questions[currentQuestion].question}
+          </h2>
+
+          <div className="space-y-4">
+            {questions[currentQuestion].options.map((option, index) => (
+              <button
+                key={index}
+                onClick={() => handleAnswer(option.value)}
+                className="w-full text-right bg-gray-700 hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-600 text-white font-semibold py-4 px-6 rounded-lg transition transform hover:scale-105 shadow-lg"
+              >
+                <span className="text-lg">{option.text}</span>
+              </button>
+            ))}
+          </div>
+
+          <div className="mt-6 text-center text-gray-400 text-sm">
+            اختار الإجابة الأقرب ليك
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default CyberSecurityQuiz;
